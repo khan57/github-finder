@@ -5,6 +5,7 @@ import spinner from "./spinner.gif";
   <Fragment>
     <img
       src={spinner}
+      alt=""
       style={{
         width: "200px",
         margin: "auto",

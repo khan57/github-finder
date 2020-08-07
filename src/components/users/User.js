@@ -1,23 +1,18 @@
-import React, { Component, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import Spinner from "../layout/Spinner";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Repos from "../repos/Repos";
 
-class User extends Component {
-  componentDidMount() {
-    console.log("this.props.match.params.login", this.props.match.params.login);
-    this.props.getUser(this.props.match.params.login);
-    this.props.getUserRepos(this.props.match.params.login);
-  }
-  static propTypes = {
-    loading: PropTypes.bool.isRequired,
-    user: PropTypes.object.isRequired,
-    getUser: PropTypes.func.isRequired,
-    getUserRepos: PropTypes.func.isRequired,
-    repos: PropTypes.array.isRequired,
-  };
-  render() {
+const  User = ({user,getUser,getUserRepos,loading,repos,match})=> {
+  useEffect(()=>{
+    console.log("this.props.match.params.login",match.params.login);
+    getUser(match.params.login);
+    getUserRepos(match.params.login);
+    // eslint-disable-next-line
+  },[])
+  
+   
     const {
       name,
       avatar_url,
@@ -32,11 +27,9 @@ class User extends Component {
       public_gists,
       hireable,
       company,
-    } = this.props.user;
+    } =user;
 
-    const { loading, repos } = this.props;
-    console.log(name);
-
+ 
     if (loading) {
       return <Spinner />;
     }
@@ -58,6 +51,7 @@ class User extends Component {
               src={avatar_url}
               className="round-img"
               style={{ width: "150px" }}
+              alt=""
             />
             <h1> {name} </h1>
             <p> Location: {location} </p>
@@ -109,7 +103,15 @@ class User extends Component {
         <Repos repos={repos} />
       </Fragment>
     );
-  }
+  
 }
 
+
+User.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+  getUser: PropTypes.func.isRequired,
+  getUserRepos: PropTypes.func.isRequired,
+  repos: PropTypes.array.isRequired,
+};
 export default User;
